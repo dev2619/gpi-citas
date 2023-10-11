@@ -1,0 +1,282 @@
+<nav class="navbar navbar-expand-lg bg-blue-300 shadow-md">
+  <div class="container-fluid">
+    <a class="navbar-brand ml-10 mr-10" href="#/dashboard"
+      ><i class="fa-solid fa-shop"></i>
+      <span class="font-bold">Gpi Citas</span></a
+    >
+    <button
+      class="btn btn-primary border-none text-blue-950"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasScrolling"
+      aria-controls="offcanvasScrolling"
+    >
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarScroll"></div>
+  </div>
+  <div class="fs-5 font-bold p-1 w-100">
+    <span>Productos</span>
+  </div>
+  <div class="fs-5 font-bold p-1 mr-10">
+    <span class="col-8">UserName</span>
+  </div>
+  <img
+    src="../../../assets/img/profile.svg"
+    class="rounded-circle w-16 mr-5"
+    alt=""
+  />
+</nav>
+
+<div
+  class="offcanvas offcanvas-start mt-14 bg-blue-400 border-none shadow-md"
+  data-bs-scroll="true"
+  data-bs-backdrop="false"
+  tabindex="-1"
+  id="offcanvasScrolling"
+  aria-labelledby="offcanvasScrollingLabel"
+>
+  <div class="offcanvas-body mt-3">
+    <ul class="list-group">
+      <li class="list-group-item border-none bg-transparent text-blue-950">
+        <a href="#/dashboard"
+          ><i class="fa-solid fa-gauge-high"></i> Dashboard
+        </a>
+      </li>
+      <li class="list-group-item border-none bg-transparent text-blue-950">
+        <a href="#/products"
+          ><i class="fa-solid fa-boxes-stacked"></i> Productos
+        </a>
+      </li>
+    </ul>
+    <ul class="list-group">
+      <li class="list-group-item border-none bg-transparent text-blue-950">
+        <a href="#">
+          <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- Products logic -->
+<div class="card mt-10 mx-auto border-0" style="max-width: 70vw">
+  <h2 class="fs-1 text-center">Administrar Productos</h2>
+  <div class="my-4 flex justify-between">
+    <button
+      pRipple
+      icon="pi pi-plus"
+      class="text-white rounded p-2 bg-green-500"
+      (click)="openNew()"
+    >
+      <i class="fa-solid fa-plus"></i> Agregar
+    </button>
+    <button
+      pRipple
+      icon="pi pi-plus"
+      class="text-white rounded p-2 bg-orange-500"
+      (click)="editProduct()"
+    >
+      <i class="fa-solid fa-pen-to-square"></i> Actualizar
+    </button>
+    <button
+      pRipple
+      class="text-white rounded p-2 bg-blue-600"
+      (click)="editProduct()"
+    >
+      <i class="fa-solid fa-tag"></i> Poner en Promoción
+    </button>
+    <button
+      pRipple
+      class="text-white rounded p-2 bg-red-600"
+      (click)="deleteSelectedProducts()"
+      [disabled]="!selectedProducts || !selectedProducts.length"
+    >
+      <i class="fa-solid fa-trash-can"></i> Eliminar
+    </button>
+  </div>
+  <p-table
+    #dt
+    [value]="products"
+    [rows]="5"
+    [paginator]="true"
+    [globalFilterFields]="['name', 'inventoryStatus', 'description', 'price']"
+    [(selection)]="selectedProducts"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Producto {first} al {last} de {totalRecords} productos."
+    [showCurrentPageReport]="true"
+  >
+    <ng-template pTemplate="caption">
+      <div class="border rounded">
+        <span class="p-input-icon-left w-100">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            (input)="dt.filterGlobal($event.target.value, 'contains')"
+            placeholder="Búsqueda..."
+            class="w-100 rounded"
+          />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr class="border">
+        <th style="width: 4rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="name" style="min-width: 15rem">
+          Nombre <p-sortIcon field="name"></p-sortIcon>
+        </th>
+        <th>Image</th>
+        <th pSortableColumn="price">
+          Precio <p-sortIcon field="price"></p-sortIcon>
+        </th>
+        <th pSortableColumn="units" style="min-width: 10rem">
+          Unidades <p-sortIcon field="category"></p-sortIcon>
+        </th>
+        <th pSortableColumn="inventoryStatus" style="min-width: 10rem">
+          Estado <p-sortIcon field="inventoryStatus"></p-sortIcon>
+        </th>
+        <th pSortableColumn="inventoryStatus" style="min-width: 10rem">
+          ¿En Promoción? <p-sortIcon field="inventoryStatus"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr class="border">
+        <td class="border">
+          <p-tableCheckbox [value]="product"></p-tableCheckbox>
+        </td>
+        <td>{{ product.name }}</td>
+        <td>
+          <img
+            [src]="product.imgSource"
+            [alt]="product.name"
+            width="50"
+            class="shadow-4"
+          />
+        </td>
+        <td>{{ product.price | currency }}</td>
+        <td>{{ product.units }}</td>
+        <td>
+          <p-tag
+            [value]="product.inventoryStatus"
+            [severity]="getSeverity(product.inventoryStatus)"
+          ></p-tag>
+        </td>
+        <td>
+          <p-tag
+            [value]="product.productOnSale == true ? 'Sí' : 'No'"
+            [severity]="product.productOnSale == true ? 'warning' : 'primary'"
+          ></p-tag>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<p-dialog
+  [(visible)]="productDialog"
+  [style]="{ width: '450px' }"
+  header="Product Details"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <img
+      [src]="product.imgSource"
+      [alt]="product.imgSource"
+      class="block m-auto pb-3"
+      *ngIf="product.imgSource"
+    />
+    <div class="field">
+      <label for="name">Nombre</label>
+      <input
+        type="text"
+        id="name"
+        class="p-2 rounded d-block w-100"
+        [(ngModel)]="product.name"
+        required
+        autofocus
+      />
+      <small class="p-error" *ngIf="submitted && !product.name"
+        >El nombre es requerido.</small
+      >
+    </div>
+    <div class="field">
+      <label for="description">Descripción</label>
+      <textarea
+        id="description"
+        class="p-2 rounded d-block w-100"
+        [(ngModel)]="product.description"
+        required
+        rows="2"
+        cols="10"
+      ></textarea>
+    </div>
+    <div class="field mt-1">
+      <label for="inventoryStatus">Estado en Inventario</label>
+      <select
+        id="inventoryStatus"
+        class="p-2 rounded d-block w-100"
+        [(ngModel)]="product.inventoryStatus"
+      >
+        <option value="DISPONIBLE">DISPONIBLE</option>
+        <option value="POCAS UNIDADES">POCAS UNIDADES</option>
+        <option value="AGOTADO">AGOTADO</option>
+      </select>
+    </div>
+    <div class="field mt-1">
+      <label for="inventoryStatus">¿Producto en promoción?</label>
+      <select
+        id="inventoryStatus"
+        class="p-2 rounded d-block w-100"
+        [(ngModel)]="product.productOnSale"
+      >
+        <option [value]="true">Si</option>
+        <option [value]="false">No</option>
+      </select>
+    </div>
+    <div class="formgrid grid">
+      <div class="field col">
+        <label for="price">Precio</label>
+        <input
+          id="price"
+          class="d-block p-2 border rounded w-100"
+          [(ngModel)]="product.price"
+          type="number"
+        />
+      </div>
+      <div class="field col">
+        <label for="quantity">Cantidad</label>
+        <input
+          id="quantity"
+          class="d-block p-2 border rounded w-100"
+          [(ngModel)]="product.units"
+          type="number"
+        />
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button
+      pRipple
+      class="text-white rounded bg-red-500 p-2 mr-5"
+      (click)="hideDialog()"
+    >
+      Cancelar
+    </button>
+    <button
+      pRipple
+      class="text-white p-2 bg-green-500 rounded"
+      (click)="saveProduct()"
+    >
+      Guardar
+    </button>
+  </ng-template>
+</p-dialog>
+<p-confirmDialog
+  [style]="{ width: '450px' }"
+  [baseZIndex]="10000"
+></p-confirmDialog>
+<p-toast></p-toast>

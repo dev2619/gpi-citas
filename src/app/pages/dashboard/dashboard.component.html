@@ -1,0 +1,78 @@
+<nav class="navbar navbar-expand-lg bg-blue-300 shadow-md">
+  <div class="container-fluid">
+    <a class="navbar-brand ml-10 mr-10" href="#/dashboard"
+      ><i class="fa-solid fa-shop"></i>
+      <span class="font-bold">Gpi Citas</span></a
+    >
+    <button
+      class="btn btn-primary border-none text-blue-950"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasScrolling"
+      aria-controls="offcanvasScrolling"
+    >
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarScroll"></div>
+  </div>
+  <div class="fs-5 font-bold p-1 w-100">
+    <span>Dashboard</span>
+  </div>
+  <div class="fs-5 font-bold p-1 mr-10">
+    <span class="col-8">UserName</span>
+  </div>
+  <img
+    src="../../../assets/img/profile.svg"
+    class="rounded-circle w-16 mr-5"
+    alt=""
+  />
+</nav>
+
+<div
+  class="offcanvas offcanvas-start mt-14 bg-blue-400 border-none shadow-md"
+  data-bs-scroll="true"
+  data-bs-backdrop="false"
+  tabindex="-1"
+  id="offcanvasScrolling"
+  aria-labelledby="offcanvasScrollingLabel"
+>
+  <div class="offcanvas-body mt-3">
+    <ul class="list-group">
+      <li class="list-group-item border-none bg-transparent text-blue-950">
+        <a href="#/dashboard"
+          ><i class="fa-solid fa-gauge-high"></i> Dashboard
+        </a>
+      </li>
+      <li class="list-group-item border-none bg-transparent text-blue-950">
+        <a href="#/products"
+          ><i class="fa-solid fa-boxes-stacked"></i> Productos
+        </a>
+      </li>
+    </ul>
+    <ul class="list-group">
+      <li class="list-group-item border-none bg-transparent text-blue-950">
+        <a href="#">
+          <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="row mx-auto mt-10" style="max-width: 75vw">
+  <div class="card flex justify-content-center col-4 p-5">
+    <p class="mx-auto f-5">Grafico de Ventas</p>
+    <p-chart type="doughnut" [data]="data" [options]="options"></p-chart>
+  </div>
+  <div class="card col-7 p-5">
+    <p class="mx-auto f-5">Grafico de Productos</p>
+    <p-chart type="bar" [data]="basicData" [options]="basicOptions"></p-chart>
+  </div>
+  <div class="card col-8 p-5">
+    <p class="mx-auto f-5">Grafico de total de productos</p>
+    <p-chart type="bar" [data]="basicData" [options]="basicOptions"></p-chart>
+  </div>
+  <div class="card flex justify-content-center col-3 p-5">
+    <p class="mx-auto f-5">Grafico de productos escasos</p>
+    <p-chart type="pie" [data]="data" [options]="options"></p-chart>
+  </div>
+</div>

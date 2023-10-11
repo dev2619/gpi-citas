@@ -1,0 +1,23 @@
+[
+    {
+        "nombre": "María Elena García",
+        "rol": "user",
+        "correo": "maria@GpiCitas.com",
+        "edad": 30,
+        "password": "contrasena1"
+    },
+    {
+        "nombre": "Carlos Alberto Rodríguez",
+        "rol": "user",
+        "correo": "carlos@GpiCitas.com",
+        "edad": 25,
+        "password": "contrasena2"
+    },
+    {
+        "nombre": "Ana Gabriela López",
+        "rol": "admin",
+        "correo": "ana@GpiCitas.com",
+        "edad": 28,
+        "password": "password"
+    }
+]
